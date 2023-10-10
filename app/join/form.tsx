@@ -15,7 +15,7 @@ export function Form() {
   return (
     <form
       action={formAction}
-      className="w-full xl:w-[50%] h-full flex flex-col items-center justify-center gap-4 bg-slate-300 rounded-md border-4 shadow-[4px_4px_0_#000] p-4 border-black"
+      className="w-full xl:w-[50%] scale-90 md:scale-100 h-full flex flex-col items-center justify-center gap-4 bg-slate-300 rounded-md border-4 shadow-[4px_4px_0_#000] p-4 border-black"
     >
       <div className="w-full h-full flex flex-col items-start justify-center gap-2">
         <label htmlFor="name" className="text-2xl text-black font-bold">

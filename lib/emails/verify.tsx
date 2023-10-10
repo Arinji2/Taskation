@@ -33,6 +33,6 @@ export async function EmailVerificationCode({
     html: emailHtml,
   };
   await new Promise((resolve, reject) => {
-    transporter.sendMail(...options);
+    transporter.sendMail({...options});
   });
 }

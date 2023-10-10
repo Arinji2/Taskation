@@ -12,7 +12,7 @@ export async function EmailVerificationCode({
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST!,
     port: Number.parseInt(process.env.EMAIL_PORT!),
-    secure: false,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER!,
       pass: process.env.EMAIL_PASS!,
@@ -32,6 +32,7 @@ export async function EmailVerificationCode({
     subject: "Verify your email for TODO-MYSQL",
     html: emailHtml,
   };
-
-  await transporter.sendMail(options);
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(options);
+  });
 }

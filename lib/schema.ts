@@ -27,6 +27,15 @@ export const RegisterInput = z
     message: "Passwords do not match",
   });
 
+export const LoginInput = z.object({
+  name: z.string(),
+
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 Characters" })
+    .max(100, { message: "Password must not exceed 100 Characters" }),
+});
+
 export const VerifyResponse = z.object({
   id: z.number(),
   email: z.string().email(),

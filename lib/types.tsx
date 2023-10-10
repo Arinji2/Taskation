@@ -1,7 +1,14 @@
 import { z } from "zod";
-import { JwtResponse, RegisterInput, User, VerifyResponse } from "./schema";
+import {
+  JwtResponse,
+  LoginInput,
+  RegisterInput,
+  User,
+  VerifyResponse,
+} from "./schema";
 
 export type Register = z.infer<typeof RegisterInput>;
+export type Login = z.infer<typeof LoginInput>;
 export type FormUser = z.infer<typeof User>;
 export type User = FormUser & {
   verified: 0 | 1;

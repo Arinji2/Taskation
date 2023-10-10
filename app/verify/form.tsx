@@ -2,9 +2,10 @@
 import { VerifyAction } from "@/lib/actions/checkVerify";
 import { experimental_useFormState as useFormState } from "react-dom";
 import { ToastComponent } from "../toastComp";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 export default function Form({ code, email }: { code: string; email: string }) {
+  const [codeState, setCodeState] = useState(code ?? "");
   const router = useRouter();
 
   const initialState = {
@@ -34,13 +35,16 @@ export default function Form({ code, email }: { code: string; email: string }) {
           type="text"
           name="code"
           id="code"
-          defaultValue={code ?? ""}
           placeholder={"Code"}
           required
+          value={codeState}
+          onChange={(e) => {
+            setCodeState(e.target.value);
+          }}
         />
       </div>
       <button
-        disabled={code.length !== 6}
+        disabled={codeState.length !== 6}
         type="submit"
         className="w-[150px] h-[50px] text-lg flex gap-2 flex-row items-center justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
       >

@@ -13,15 +13,19 @@ export async function signJWT(id: number, verified: 0 | 1) {
   return token;
 }
 
-export async function validateJWT(jwt: string | undefined): Promise<boolean> {
-  if (!jwt) {
-    return false;
+export function getJwtSecretKey() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT Secret key is not matched");
   }
+  return new TextEncoder().encode(secret);
+}
+
+export async function verifyJwtToken(token: string) {
   try {
-    await jwtVerify(jwt, secret);
-    const decoded = decodeJwt(jwt);
-    return !decoded.expired;
+    const { payload } = await jwtVerify(token, getJwtSecretKey());
+    return payload;
   } catch (error) {
-    return false;
+    return null;
   }
 }

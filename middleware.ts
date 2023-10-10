@@ -1,26 +1,38 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getVerification } from "./lib/getUserID";
+
+import { verifyJwtToken } from "./lib/jwtFunctions";
+import { JwtProps } from "./lib/types";
+import { JwtResponse } from "./lib/schema";
 
 export async function middleware(request: NextRequest) {
-  const url = process.env.WEB_DOMAIN;
-
   if (request.nextUrl.pathname.startsWith("/dash")) {
     const token = request.cookies.get("token")?.value;
 
     if (token) {
       try {
-        const isVerified = await getVerification(token!);
+        const hasVerifiedTokenRaw = token && (await verifyJwtToken(token));
+        const hasVerifiedToken = JwtResponse.safeParse(hasVerifiedTokenRaw);
+        if (!hasVerifiedToken.success) {
+          request.cookies.delete("token");
+          return NextResponse.redirect(
+            new URL("/login", request.nextUrl.origin)
+          );
+        }
 
-        if (isVerified === 0) {
-          return NextResponse.redirect(`${url}/verify`);
+        if (hasVerifiedToken.data.verified === 0) {
+          return NextResponse.redirect(
+            new URL("/verify", request.nextUrl.origin)
+          );
         } else return NextResponse.next();
       } catch (e) {
-        return NextResponse.redirect(`${url}/login`);
+        return NextResponse.redirect(new URL("/login", request.nextUrl.origin));
       }
     } else {
       const nextPath = encodeURIComponent(request.nextUrl.pathname);
-      return NextResponse.redirect(`${url}/login?next=${nextPath}`);
+      return NextResponse.redirect(
+        new URL(`/login?next=${nextPath}`, request.nextUrl.origin)
+      );
     }
   } else NextResponse.next();
 }

@@ -38,3 +38,8 @@ export const CodeResponse = z.object({
   code: z.string().max(6).min(6),
   email: z.string().email(),
 });
+
+export const JwtResponse = z.object({
+  id: z.number(),
+  verified: z.number().refine((data) => data === 1 || data === 0),
+});

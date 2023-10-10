@@ -19,11 +19,7 @@ export function Form() {
     if (state.message === "") return;
     if (state.type === "success") toast.success(state.message);
     if (state.type === "error") toast.error(state.message);
-    console.log(
-      state.message,
-      state.type,
-      state.message === "Successfully Logged In"
-    );
+
     if (state.message === "Successfully Logged In") router.push("/dash");
 
     return () => {

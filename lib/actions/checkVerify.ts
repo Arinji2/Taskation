@@ -14,7 +14,6 @@ export async function VerifyAction(prevState: any, formData: FormData) {
     email: email,
   };
 
-  console.log(inputs);
   const res = CodeResponse.safeParse(inputs);
 
   if (!res.success) {

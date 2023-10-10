@@ -23,7 +23,7 @@ export async function LoginAction(prevState: any, formData: FormData) {
     };
   } else {
     let data: User[] = [];
-    console.log(res.data);
+
     if (res.data.name.includes("@")) {
       data = await query("SELECT * FROM users WHERE email = ?", [
         res.data.name,
@@ -48,7 +48,7 @@ export async function LoginAction(prevState: any, formData: FormData) {
     if (!verified) {
       return {
         type: "error",
-        message: "Password Incorrect",
+        message: "Account not Found",
       };
     } else {
       const token = await signJWT(data[0].id, data[0].verified);

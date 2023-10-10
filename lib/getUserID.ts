@@ -20,12 +20,20 @@ export async function getUserId(jwt: string) {
     const queryUserResult = await query(`SELECT * FROM users WHERE id=?`, [
       payload.id,
     ]);
-
     const data: Array<any> = Array.isArray(queryUserResult)
       ? queryUserResult
       : [];
 
     return data[0] as User;
+  } catch (error) {
+    throw new Error("Unauthorized");
+  }
+}
+
+export async function getVerification(jwt: string) {
+  try {
+    const payload: any = await verifyJwt(jwt);
+    return payload.verified;
   } catch (error) {
     throw new Error("Unauthorized");
   }

@@ -41,7 +41,7 @@ export async function RegisterAction(prevState: any, formData: FormData) {
       [id, res.data.name, res.data.email, encryptedPassword]
     );
 
-    const token = await signJWT(id);
+    const token = await signJWT(id, 0);
     cookies().set("token", token);
 
     return {

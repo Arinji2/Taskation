@@ -26,3 +26,15 @@ export const RegisterInput = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
   });
+
+export const VerifyResponse = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  userID: z.number(),
+  created: z.date(),
+});
+
+export const CodeResponse = z.object({
+  code: z.string().max(6).min(6),
+  email: z.string().email(),
+});

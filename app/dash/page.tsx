@@ -4,9 +4,8 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const cookieStore = cookies();
   const cookie = cookieStore.get("token");
-  if (!cookie) redirect("/login");
 
-  const user = await getUserId(cookie.value);
+  const user = await getUserId(cookie!.value);
 
   return <div></div>;
 }

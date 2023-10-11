@@ -34,5 +34,5 @@ export async function EmailVerificationCode({
   };
 
   const res = await transporter.sendMail(options);
-  console.log(res);
+  console.error(res);
 }

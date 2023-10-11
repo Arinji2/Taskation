@@ -4,6 +4,7 @@ export const User = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string().email(),
+  verified: z.number().refine((data) => data === 1 || data === 0),
 });
 
 export const RegisterInput = z

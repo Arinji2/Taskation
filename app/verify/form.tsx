@@ -1,12 +1,16 @@
 "use client";
+import { useToast } from "@/hooks/useToast";
 import { VerifyAction } from "@/lib/actions/checkVerify";
-import { experimental_useFormState as useFormState } from "react-dom";
-import { ToastComponent } from "../toastComp";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import {
+  experimental_useFormState as useFormState,
+  experimental_useFormStatus as useFormStatus,
+} from "react-dom";
+import { CheckCodeButton } from "./buttons";
 export default function Form({ code, email }: { code: string; email: string }) {
   const [codeState, setCodeState] = useState(code ?? "");
-  const router = useRouter();
+  const { pending } = useFormStatus();
 
   const initialState = {
     type: "success" as "success" | "loading" | "error",
@@ -16,10 +20,12 @@ export default function Form({ code, email }: { code: string; email: string }) {
 
   const [state, formAction] = useFormState(VerifyAction, initialState);
 
-  useEffect(() => {
-    if (state.type === "success") router.push("/dash");
-  }, [state]);
-
+  useToast({
+    message: state.message,
+    type: state.type,
+    successMessage: "Successfully Verified",
+    successRoute: "/dash",
+  });
   return (
     <form
       action={formAction}
@@ -46,14 +52,10 @@ export default function Form({ code, email }: { code: string; email: string }) {
       <button
         disabled={codeState.length !== 6}
         type="submit"
-        className="w-[150px] h-[50px] text-lg flex gap-2 flex-row items-center justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
+        className="w-[180px] h-[50px] text-lg flex gap-2 flex-row items-center justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
       >
-        <p>Verify Code</p>
+        <CheckCodeButton />
       </button>
-      <ToastComponent
-        message={state.message}
-        type={state.type as "success" | "error"}
-      />
     </form>
   );
 }

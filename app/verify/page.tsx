@@ -1,18 +1,15 @@
-import { cookies } from "next/headers";
-import { getUserId } from "@/lib/getUserID";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SendEmailButton } from "./buttons";
 import Form from "./form";
+import { getUserData } from "@/lib/userFunctions";
 
 export default async function Page({
   searchParams,
 }: {
   searchParams: { [code: string]: string | undefined };
 }) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("token")?.value!;
-  const user = await getUserId(token);
+  const user = await getUserData();
 
   if (user.email.length === 0) redirect("/login");
   return (

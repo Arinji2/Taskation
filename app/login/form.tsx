@@ -1,13 +1,12 @@
 "use client";
 import { LoginAction } from "@/lib/actions/login";
-import { ToastComponent } from "../toastComp";
 import PasswordFields from "./password";
-import SubmitButton from "./submit";
 
-import { experimental_useFormState as useFormState } from "react-dom";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { useToast } from "@/hooks/useToast";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { experimental_useFormState as useFormState } from "react-dom";
+import SubmitButton from "./submit";
 const initialState = {
   type: "success" as "success" | "loading" | "error",
   message: "",
@@ -15,17 +14,13 @@ const initialState = {
 export function Form() {
   const router = useRouter();
   const [state, formAction] = useFormState(LoginAction, initialState);
-  useEffect(() => {
-    if (state.message === "") return;
-    if (state.type === "success") toast.success(state.message);
-    if (state.type === "error") toast.error(state.message);
 
-    if (state.message === "Successfully Logged In") router.push("/dash");
-
-    return () => {
-      toast.dismiss();
-    };
-  }, [state.message, state.type]);
+  useToast({
+    message: state.message,
+    type: state.type,
+    successMessage: "Successfully Logged In",
+    successRoute: "/verify",
+  });
 
   return (
     <form

@@ -2,10 +2,9 @@
 
 import { signJWT } from "@/lib/jwtFunctions";
 import { query } from "@/lib/query";
-import { CodeResponse } from "@/lib/schema";
+import { CodeResponse, User } from "@/lib/schema";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getUserId } from "../getUserID";
+import { getUserData } from "../userFunctions";
 
 export async function VerifyAction(prevState: any, formData: FormData) {
   const email = prevState.email;
@@ -34,14 +33,17 @@ export async function VerifyAction(prevState: any, formData: FormData) {
         message: "Code Not Found",
       };
     } else {
-      const jwtToken = cookies().get("token");
-      if (!jwtToken) redirect("/login");
-      const user = await getUserId(jwtToken.value);
+      await query("DELETE FROM verification WHERE email = ?", [res.data.email]);
+      await query("UPDATE users SET verified = ? WHERE email = ?", [
+        1,
+        res.data.email,
+      ]);
 
-      await query("DELETE FROM verification WHERE email = ?", [email]);
-      await query("UPDATE users SET verified = ? WHERE id = ?", [1, user.id]);
+      const user = await getUserData();
+      const parsedUser = User.safeParse(user);
+      if (parsedUser.success === false) throw new Error("Unauthorized");
 
-      const token = await signJWT(user.id, 1);
+      const token = await signJWT(parsedUser.data.id, 1);
 
       cookies().set("token", token);
     }

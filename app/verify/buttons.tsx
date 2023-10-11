@@ -3,6 +3,7 @@
 import { sendVerifyEmail } from "@/lib/actions/email/verifyEmail";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
 export function SendEmailButton({ email, id }: { email: string; id: number }) {
@@ -31,6 +32,16 @@ export function SendEmailButton({ email, id }: { email: string; id: number }) {
       >
         {loading && <Loader2 className="animate-spin" />} <p>Send Email</p>
       </button>
+    </>
+  );
+}
+
+export function CheckCodeButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <>
+      {pending && <Loader2 className="animate-spin" />} <p>Verify Code</p>
     </>
   );
 }

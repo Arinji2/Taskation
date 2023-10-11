@@ -1,11 +1,8 @@
-import { getUserId } from "@/lib/getUserID";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-export default async function Page() {
-  const cookieStore = cookies();
-  const cookie = cookieStore.get("token");
+import { getUserData } from "@/lib/userFunctions";
 
-  const user = await getUserId(cookie!.value);
+export default async function Page() {
+  const user = await getUserData();
+  console.log(user);
 
   return (
     <div className="w-full h-[100svh] flex flex-col items-center justify-center">

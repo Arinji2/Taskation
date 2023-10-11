@@ -21,7 +21,7 @@ export async function sendVerifyEmail(email: string, id: number) {
 
       const diff = now.getTime() - createdAt.getTime();
       const diffMinutes = Math.floor(diff / 60000);
-      if (diffMinutes > 30) {
+      if (true) {
         await query(`DELETE FROM verification WHERE email=?`, [email]);
         await query(
           `INSERT INTO verification (id, email, userID, created) VALUES (?, ?, ?, ?)`,

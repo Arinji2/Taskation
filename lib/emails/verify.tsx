@@ -1,5 +1,5 @@
 import { render } from "@react-email/render";
-import nodemailer from "nodemailer";
+
 import VerifyEmail from "../../emails/verify";
 
 export async function EmailVerificationCode({
@@ -9,16 +9,6 @@ export async function EmailVerificationCode({
   code: number;
   email: string;
 }) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST!,
-    port: Number.parseInt(process.env.EMAIL_PORT!),
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER!,
-      pass: process.env.EMAIL_PASS!,
-    },
-  });
-
   const emailHtml = render(
     <VerifyEmail
       code={code}
@@ -33,6 +23,19 @@ export async function EmailVerificationCode({
     html: emailHtml,
   };
 
-  const res = await transporter.sendMail(options);
-  console.error(res);
+  const stringOptions = JSON.stringify(options);
+
+  const res = await fetch("https://email.arinji.com/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      options: stringOptions,
+    }),
+  });
+
+  if (res.status !== 200) {
+    throw new Error("Error sending email");
+  }
 }

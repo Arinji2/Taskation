@@ -13,7 +13,7 @@ export default async function Page() {
         <h1 className="md:text-6xl text-4xl xl:text-7xl font-bold text-black pt-10">
           DASHBOARD
         </h1>
-        <section className="w-full h-full flex flex-wrap flex-row items-center justify-center gap-4 md:gap-6">
+        <section className="w-full h-fit flex flex-wrap flex-row items-center justify-center gap-2 md:gap-6">
           <CreateTodoComponent />
           {todos.hasTodos &&
             todos.todos?.map((todo) => (

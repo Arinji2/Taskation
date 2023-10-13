@@ -37,7 +37,7 @@ export function Form() {
           required
           maxLength={50}
           minLength={1}
-          className="w-full max-w-[700px] px-2 h-10 ml-5 rounded-md outline-1 bg-gray-200 outline-gray-200 font-medium "
+          className="w-full max-w-[700px] px-2 h-10 md:ml-5 rounded-md outline-1 bg-gray-200 outline-gray-200 font-medium "
         />
       </div>
       <div className="w-full h-full flex flex-col items-start justify-center gap-2">
@@ -50,7 +50,7 @@ export function Form() {
           required
           maxLength={100}
           minLength={10}
-          className="w-full max-w-[700px] px-2 py-2 h-20 ml-5 rounded-md outline-1 bg-gray-200 outline-gray-200 font-medium "
+          className="w-full max-w-[700px] px-2 py-2 h-20 md:ml-5 rounded-md outline-1 bg-gray-200 outline-gray-200 font-medium "
         />
       </div>
       <SubmitButton />

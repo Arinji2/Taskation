@@ -53,3 +53,20 @@ export const JwtResponse = z.object({
   id: z.number(),
   verified: z.number().refine((data) => data === 1 || data === 0),
 });
+
+export const TodoResponse = z.object({
+  id: z.number(),
+  name: z.string().max(40).min(1),
+  description: z.string().max(100).min(10),
+  created: z.date(),
+  completed: z.number(),
+  userID: z.number(),
+  public: z.number().refine((data) => data === 1 || data === 0),
+});
+
+export const TodoResponses = z.array(TodoResponse);
+
+export const TodoInput = z.object({
+  name: z.string().max(40).min(1),
+  description: z.string().max(100).min(10),
+});

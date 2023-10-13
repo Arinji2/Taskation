@@ -19,7 +19,7 @@ export function Form() {
     message: state.message,
     type: state.type,
     successMessage: "Successfully Logged In",
-    successRoute: "/verify",
+    successRoute: "/dash",
   });
 
   return (

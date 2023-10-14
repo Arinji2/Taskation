@@ -6,6 +6,7 @@ import Progress from "./progress";
 import Public from "./public";
 import { CreateTodoComponent, TodoComponent } from "@/app/dash/todos";
 import { SubTodoProps, User } from "@/lib/types";
+import Link from "next/link";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const todo = await getTodo({ todoID: params.id });
@@ -46,7 +47,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <section className="w-full min-h-[100svh] flex flex-col items-center justify-center">
-      <div className=" w-[95%] h-full flex flex-col items-center md:items-start justify-start gap-4 max-w-[1280px]">
+      <div className=" w-[95%] h-full flex flex-col items-center md:items-start justify-start gap-4 max-w-[1280px] pb-5">
         <h1 className="md:text-6xl text-4xl xl:text-7xl font-bold text-black pt-10">
           {todo.todos.name}
         </h1>
@@ -64,7 +65,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           <Progress props={todo.todos} isOwner={isOwner} />
           <Public props={todo.todos} isOwner={isOwner} />
         </div>
-
+        {isOwner && (
+          <Link
+            href={`/dash`}
+            className="text-lg line-clamp-1 text-gray-700 font-medium text-center md:ml-4 border-b-2 border-black"
+          >
+            Go back to dashboard
+          </Link>
+        )}
         <section className="w-full h-fit flex flex-wrap flex-row items-center justify-center md:justify-start md:pl-3 md:mt-10 mt-5  md:gap-6">
           {isOwner && <CreateTodoComponent subTodo todoID={todo.todos.id} />}
           {subTodos.hasTodos &&
@@ -78,6 +86,22 @@ export default async function Page({ params }: { params: { id: string } }) {
               />
             ))}{" "}
         </section>
+        {isOwner && (
+          <Link
+            href={`/todo/${todo.todos.id}/edit`}
+            className="w-fit md:ml-5 h-fit px-6 py-2 text-xl flex gap-2 flex-row items-center justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
+          >
+            <p>Edit Todo</p>
+          </Link>
+        )}
+        {isOwner && (
+          <Link
+            href={`/todo/${todo.todos.id}/delete`}
+            className="w-fit md:ml-5 h-fit px-6 py-2 text-xl flex gap-2 flex-row items-center justify-center bg-red-500 hover:bg-red-600 text-white border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
+          >
+            <p>Delete Todo</p>
+          </Link>
+        )}
       </div>
     </section>
   );

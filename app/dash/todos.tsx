@@ -23,7 +23,7 @@ export function CreateTodoComponent({
 }) {
   return (
     <Link
-      href={subTodo ? `/dash/create/${todoID!}` : "/todo/create"}
+      href={subTodo ? `/dash/create/${todoID!}` : "/dash/create"}
       className="w-[350px] scale-75 shrink-0 md:scale-90 transition-all ease-in-out duration-300 bg-slate-200 hover:bg-zinc-300 hover:-translate-y-10 h-[400px] shadow-[2px_4px_0_#000] border-4 border-black rounded-sm flex flex-col items-center justify-center gap-10"
     >
       <PlusCircle className="text-black w-[100px] h-[100px]" />

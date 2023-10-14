@@ -51,7 +51,7 @@ export default async function Page({
   const showBack = isOwner || parentTodo.todos.public === 1;
   return (
     <section className="w-full min-h-[100svh] flex flex-col items-center justify-center">
-      <div className=" w-[95%] h-full flex flex-col items-center md:items-start justify-start gap-6 md:gap-4 max-w-[1280px]">
+      <div className=" w-[95%] h-full flex flex-col items-center md:items-start justify-start gap-6 md:gap-4 max-w-[1280px] pb-5">
         <h1 className="md:text-6xl text-4xl xl:text-7xl font-bold text-black pt-10">
           {todo.todos.name}
         </h1>
@@ -72,9 +72,25 @@ export default async function Page({
         {showBack && (
           <Link
             href={`/todo/${parentTodo.todos.id}`}
-            className="text-xl text-gray-700 font-medium text-center md:ml-4 border-b-2 border-black"
+            className="text-lg line-clamp-1 text-gray-700 font-medium text-center md:ml-4 border-b-2 border-black"
           >
             Go back to {parentTodo.todos.name}
+          </Link>
+        )}
+        {isOwner && (
+          <Link
+            href={`/todo/${parentTodo.todos.id}/${todo.todos.id}/edit`}
+            className="w-fit md:ml-5 h-fit px-6 py-2 text-xl flex gap-2 flex-row items-center justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
+          >
+            <p>Edit Todo</p>
+          </Link>
+        )}
+        {isOwner && (
+          <Link
+            href={`/todo/${parentTodo.todos.id}/${todo.todos.id}/delete`}
+            className="w-fit md:ml-5 h-fit px-6 py-2 text-xl flex gap-2 flex-row items-center justify-center bg-red-500 hover:bg-red-600 text-white border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
+          >
+            <p>Delete Todo</p>
           </Link>
         )}
       </div>

@@ -1,23 +1,42 @@
 "use client";
-import { TodoProps } from "@/lib/types";
+import { SubTodoProps, TodoProps } from "@/lib/types";
 import { dateToReadable } from "@/lib/utils";
 import { Loader2, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export function CreateTodoComponent() {
+export function CreateTodoComponent({ subTodo }: { subTodo?: boolean }) {
   return (
     <Link
       href="/dash/create"
       className="w-[350px] scale-75 shrink-0 md:scale-90 transition-all ease-in-out duration-300 bg-slate-200 hover:bg-zinc-300 hover:-translate-y-10 h-[400px] shadow-[2px_4px_0_#000] border-4 border-black rounded-sm flex flex-col items-center justify-center gap-10"
     >
       <PlusCircle className="text-black w-[100px] h-[100px]" />
-      <p className="text-black text-3xl font-medium">Create a Todo</p>
+      <p className="text-black text-3xl font-medium">
+        Create a {subTodo ? "Sub Todo" : "Todo"}
+      </p>
     </Link>
   );
 }
 
-export function TodoComponent({ TodoProps }: { TodoProps: TodoProps }) {
+type TodoComponentProps = {
+  id: number;
+  name: string;
+  description: string;
+  public: number;
+  completed: number;
+  created: Date;
+  userID?: number;
+  todoID?: number;
+};
+
+export function TodoComponent({
+  TodoProps,
+  subTodo,
+}: {
+  TodoProps: TodoComponentProps;
+  subTodo?: boolean;
+}) {
   const [completed, setCompleted] = useState(
     TodoProps.completed === 1 ? true : false
   );
@@ -105,7 +124,11 @@ export function TodoComponent({ TodoProps }: { TodoProps: TodoProps }) {
           </div>
         </div>
         <Link
-          href={`/dash/todo/${TodoProps.id}`}
+          href={
+            subTodo
+              ? `/todo/${TodoProps.todoID}/${TodoProps.id}`
+              : `/todo/${TodoProps.id}`
+          }
           type="submit"
           className="w-[70%] h-[30px] text-sm flex gap-2 flex-col items-start p-4 justify-center bg-slate-300 hover:bg-black text-black hover:text-slate-300 border-4 border-black transition-all ease-in-out duration-300  rounded-md font-bold"
         >

@@ -1,7 +1,11 @@
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const token = cookies().get("token");
+  if (token) redirect("/dash");
   return (
     <main className="w-full min-h-[100svh] flex flex-col items-center justify-center max-w-[1280px] bg-gray-200 gap-10">
       <h1 className="font-bold md:text-6xl text-5xl xl:text-7xl text-black">

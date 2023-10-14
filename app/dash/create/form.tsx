@@ -18,7 +18,7 @@ export function Form() {
     message: state.message,
     type: state.type,
     successMessage: "Successfully Created Todo",
-    successRoute: `/dash/todo/${state.id}`,
+    successRoute: `/todo/${state.id}`,
   });
 
   return (

@@ -3,6 +3,7 @@ import {
   JwtResponse,
   LoginInput,
   RegisterInput,
+  SubTodoResponse,
   TodoInput,
   TodoResponse,
   User,
@@ -18,5 +19,5 @@ export type User = FormUser & {
 export type Verify = z.infer<typeof VerifyResponse>;
 export type JwtProps = z.infer<typeof JwtResponse>;
 export type TodoProps = z.infer<typeof TodoResponse>;
-
+export type SubTodoProps = z.infer<typeof SubTodoResponse>;
 export type TodoInput = z.infer<typeof TodoInput>;

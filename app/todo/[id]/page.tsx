@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import Progress from "./progress";
 import Public from "./public";
 import { CreateTodoComponent, TodoComponent } from "@/app/dash/todos";
-import { SubTodoProps } from "@/lib/types";
+import { SubTodoProps, User } from "@/lib/types";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const todo = await getTodo({ todoID: params.id });
@@ -24,16 +24,17 @@ export default async function Page({ params }: { params: { id: string } }) {
   const todo = await getTodo({ todoID: params.id });
 
   const isPublic = todo.todos.public === 1 ? true : false;
-  let user = null;
+  let user = null as User | null;
   let isOwner = false;
   let subTodos = await getAllSubTodos({
     todoID: todo.todos.id,
   });
+
   try {
-    user = await getUserData();
+    user = (await getUserData()) as User;
     isOwner = user.id === todo.todos.userID;
   } catch (e) {
-    user = await getUserData(todo.todos.userID);
+    user = (await getUserData(todo.todos.userID)) as User;
     if (!isPublic) {
       redirect("404");
     }
@@ -66,7 +67,12 @@ export default async function Page({ params }: { params: { id: string } }) {
           {isOwner && <CreateTodoComponent subTodo />}
           {subTodos.hasTodos &&
             subTodos.todos?.map((todo) => (
-              <TodoComponent TodoProps={todo} subTodo key={todo.id} />
+              <TodoComponent
+                TodoProps={todo}
+                subTodo
+                key={todo.id}
+                userID={user ? user.id : 0}
+              />
             ))}{" "}
         </section>
       </div>

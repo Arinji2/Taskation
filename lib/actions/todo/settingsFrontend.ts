@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 type Props = {
   id: number;
   userID: number;
+  parentTodo?: number;
 };
 
 export async function ManageSettings({
@@ -33,6 +34,7 @@ export async function ManageSettings({
     todoID: props.id,
     task: task,
     userID: props.userID,
+    parentTodo: props.parentTodo,
   });
   if (res.type === "error") return toast.error(res.message);
   else toast.success(res.message);

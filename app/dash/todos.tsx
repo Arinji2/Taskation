@@ -1,5 +1,11 @@
 "use client";
-import { SubTodoProps, TodoProps } from "@/lib/types";
+import {
+  ChangeCompleted,
+  ChangePublic,
+  ChangeSubTodoCompleted,
+  ChangeSubTodoPublic,
+} from "@/lib/actions/todo/settings";
+import { ManageSettings } from "@/lib/actions/todo/settingsFrontend";
 import { dateToReadable } from "@/lib/utils";
 import { Loader2, PlusCircle } from "lucide-react";
 import Link from "next/link";
@@ -33,9 +39,13 @@ type TodoComponentProps = {
 export function TodoComponent({
   TodoProps,
   subTodo,
+  notOwner,
+  userID,
 }: {
   TodoProps: TodoComponentProps;
   subTodo?: boolean;
+  notOwner?: boolean;
+  userID?: number;
 }) {
   const [completed, setCompleted] = useState(
     TodoProps.completed === 1 ? true : false
@@ -76,12 +86,21 @@ export function TodoComponent({
               )}
             </div>
             <button
-              onClick={() => {
-                setLoadingCompleted(true);
-                setCompleted(!completed);
-                setTimeout(() => {
-                  setLoadingCompleted(false);
-                }, 3000);
+              onClick={async () => {
+                const props = {
+                  id: TodoProps.id,
+                  userID: TodoProps.userID ? TodoProps.userID : userID!,
+                  parentTodo: TodoProps.todoID ? TodoProps.todoID : 0,
+                };
+                await ManageSettings({
+                  isOwner: notOwner ? false : true,
+                  props: props,
+                  loading: loadingCompleted,
+                  setLoading: setLoadingCompleted,
+                  action: subTodo ? ChangeSubTodoCompleted : ChangeCompleted,
+                  task: !completed,
+                  setTask: setCompleted,
+                });
               }}
               className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
             >
@@ -104,12 +123,21 @@ export function TodoComponent({
               )}
             </div>
             <button
-              onClick={() => {
-                setLoadingTodoPublic(true);
-                setTodoPublic(!todoPublic);
-                setTimeout(() => {
-                  setLoadingTodoPublic(false);
-                }, 3000);
+              onClick={async () => {
+                const props = {
+                  id: TodoProps.id,
+                  userID: TodoProps.userID ? TodoProps.userID : userID!,
+                  parentTodo: TodoProps.todoID ? TodoProps.todoID : 0,
+                };
+                await ManageSettings({
+                  isOwner: notOwner ? false : true,
+                  props: props,
+                  loading: loadingTodoPublic,
+                  setLoading: setLoadingTodoPublic,
+                  action: subTodo ? ChangeSubTodoPublic : ChangePublic,
+                  task: !todoPublic,
+                  setTask: setTodoPublic,
+                });
               }}
               className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
             >

@@ -80,3 +80,9 @@ export const TodoInput = z.object({
   name: z.string().max(40).min(1),
   description: z.string().max(100).min(10),
 });
+
+export const SubTodoInput = z.object({
+  name: z.string().max(40).min(1),
+  description: z.string().max(100).min(10),
+  parentTodo: z.number(),
+});

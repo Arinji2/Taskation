@@ -5,16 +5,25 @@ import {
   ChangeSubTodoCompleted,
   ChangeSubTodoPublic,
 } from "@/lib/actions/todo/settings";
-import { ManageSettings } from "@/lib/actions/todo/settingsFrontend";
+import {
+  ManageSettings,
+  ManageSubTodoSettings,
+} from "@/lib/actions/todo/settingsFrontend";
 import { dateToReadable } from "@/lib/utils";
 import { Loader2, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export function CreateTodoComponent({ subTodo }: { subTodo?: boolean }) {
+export function CreateTodoComponent({
+  subTodo,
+  todoID,
+}: {
+  subTodo?: boolean;
+  todoID?: number;
+}) {
   return (
     <Link
-      href="/dash/create"
+      href={subTodo ? `/dash/create/${todoID!}` : "/todo/create"}
       className="w-[350px] scale-75 shrink-0 md:scale-90 transition-all ease-in-out duration-300 bg-slate-200 hover:bg-zinc-300 hover:-translate-y-10 h-[400px] shadow-[2px_4px_0_#000] border-4 border-black rounded-sm flex flex-col items-center justify-center gap-10"
     >
       <PlusCircle className="text-black w-[100px] h-[100px]" />
@@ -39,12 +48,12 @@ type TodoComponentProps = {
 export function TodoComponent({
   TodoProps,
   subTodo,
-  notOwner,
+  owner,
   userID,
 }: {
   TodoProps: TodoComponentProps;
   subTodo?: boolean;
-  notOwner?: boolean;
+  owner?: boolean;
   userID?: number;
 }) {
   const [completed, setCompleted] = useState(
@@ -85,33 +94,63 @@ export function TodoComponent({
                 <Loader2 className="animate-spin h-[13px] w-[13px]" />
               )}
             </div>
-            <button
-              onClick={async () => {
-                const props = {
-                  id: TodoProps.id,
-                  userID: TodoProps.userID ? TodoProps.userID : userID!,
-                  parentTodo: TodoProps.todoID ? TodoProps.todoID : 0,
-                };
-                await ManageSettings({
-                  isOwner: notOwner ? false : true,
-                  props: props,
-                  loading: loadingCompleted,
-                  setLoading: setLoadingCompleted,
-                  action: subTodo ? ChangeSubTodoCompleted : ChangeCompleted,
-                  task: !completed,
-                  setTask: setCompleted,
-                });
-              }}
-              className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
-            >
-              <div
-                className={`${
-                  completed
-                    ? "translate-x-full bg-green-500 "
-                    : "translate-x-0 bg-red-500 "
-                } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
-              ></div>
-            </button>
+            {subTodo ? (
+              <button
+                disabled={!owner}
+                onClick={async () => {
+                  const props = {
+                    id: TodoProps.id,
+                    todoID: TodoProps.todoID!,
+                  };
+                  await ManageSubTodoSettings({
+                    isOwner: owner ? owner : false,
+                    props: props,
+                    loading: loadingCompleted,
+                    setLoading: setLoadingCompleted,
+                    action: ChangeSubTodoCompleted,
+                    task: !completed,
+                    setTask: setCompleted,
+                  });
+                }}
+                className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
+              >
+                <div
+                  className={`${
+                    completed
+                      ? "translate-x-full bg-green-500 "
+                      : "translate-x-0 bg-red-500 "
+                  } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
+                ></div>
+              </button>
+            ) : (
+              <button
+                disabled={!owner}
+                onClick={async () => {
+                  const props = {
+                    id: TodoProps.id,
+                    userID: userID!,
+                  };
+                  await ManageSettings({
+                    isOwner: owner ? owner : false,
+                    props: props,
+                    loading: loadingCompleted,
+                    setLoading: setLoadingCompleted,
+                    action: ChangeCompleted,
+                    task: !completed,
+                    setTask: setCompleted,
+                  });
+                }}
+                className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
+              >
+                <div
+                  className={`${
+                    completed
+                      ? "translate-x-full bg-green-500 "
+                      : "translate-x-0 bg-red-500 "
+                  } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
+                ></div>
+              </button>
+            )}
           </div>
           <div className="w-full h-full flex flex-col items-start justify-center gap-1">
             <div className="w-full h-fit flex flex-row items-center justify-start gap-1">
@@ -122,33 +161,63 @@ export function TodoComponent({
                 <Loader2 className="animate-spin h-[13px] w-[13px]" />
               )}
             </div>
-            <button
-              onClick={async () => {
-                const props = {
-                  id: TodoProps.id,
-                  userID: TodoProps.userID ? TodoProps.userID : userID!,
-                  parentTodo: TodoProps.todoID ? TodoProps.todoID : 0,
-                };
-                await ManageSettings({
-                  isOwner: notOwner ? false : true,
-                  props: props,
-                  loading: loadingTodoPublic,
-                  setLoading: setLoadingTodoPublic,
-                  action: subTodo ? ChangeSubTodoPublic : ChangePublic,
-                  task: !todoPublic,
-                  setTask: setTodoPublic,
-                });
-              }}
-              className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
-            >
-              <div
-                className={`${
-                  todoPublic
-                    ? "translate-x-full bg-green-500 "
-                    : "translate-x-0 bg-red-500 "
-                } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
-              ></div>
-            </button>
+            {subTodo ? (
+              <button
+                disabled={!owner}
+                onClick={async () => {
+                  const props = {
+                    id: TodoProps.id,
+                    todoID: TodoProps.todoID!,
+                  };
+                  await ManageSubTodoSettings({
+                    isOwner: owner ? owner : false,
+                    props: props,
+                    loading: loadingTodoPublic,
+                    setLoading: setLoadingTodoPublic,
+                    action: ChangeSubTodoPublic,
+                    task: !todoPublic,
+                    setTask: setTodoPublic,
+                  });
+                }}
+                className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
+              >
+                <div
+                  className={`${
+                    todoPublic
+                      ? "translate-x-full bg-green-500 "
+                      : "translate-x-0 bg-red-500 "
+                  } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
+                ></div>
+              </button>
+            ) : (
+              <button
+                disabled={!owner}
+                onClick={async () => {
+                  const props = {
+                    id: TodoProps.id,
+                    userID: userID!,
+                  };
+                  await ManageSettings({
+                    isOwner: owner ? owner : false,
+                    props: props,
+                    loading: loadingTodoPublic,
+                    setLoading: setLoadingTodoPublic,
+                    action: ChangePublic,
+                    task: !todoPublic,
+                    setTask: setTodoPublic,
+                  });
+                }}
+                className="w-[40px] h-[20px] rounded-3xl border-2 border-black relative overflow-hidden"
+              >
+                <div
+                  className={`${
+                    todoPublic
+                      ? "translate-x-full bg-green-500 "
+                      : "translate-x-0 bg-red-500 "
+                  } w-[20px] rounded-3xl h-full transition-transform ease-in-out duration-300 `}
+                ></div>
+              </button>
+            )}
           </div>
         </div>
         <Link

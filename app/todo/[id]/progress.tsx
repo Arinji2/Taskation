@@ -20,8 +20,8 @@ export default function Progress({
   );
   const [loadingCompleted, setLoadingCompleted] = useState(false);
   return (
-    <div className="w-full h-full flex flex-col items-start justify-center gap-1 pl-5">
-      <div className="w-full h-fit flex flex-row items-center justify-start gap-1">
+    <div className="w-full h-full flex flex-col items-center md:items-start justify-center gap-1 md:pl-5">
+      <div className="w-full h-fit flex flex-row items-center justify-center md:justify-start gap-1">
         <p className="text-black text-lg font-medium line-clamp-5">
           Completed{" "}
         </p>

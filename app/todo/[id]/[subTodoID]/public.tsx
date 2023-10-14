@@ -1,16 +1,15 @@
 "use client";
-import { ChangePublic } from "@/lib/actions/todo/settings";
-import { ManageSettings } from "@/lib/actions/todo/settingsFrontend";
-import { TodoProps } from "@/lib/types";
+import { ChangePublic, ChangeSubTodoPublic } from "@/lib/actions/todo/settings";
+import { ManageSubTodoSettings } from "@/lib/actions/todo/settingsFrontend";
+import { SubTodoProps } from "@/lib/types";
 import { Loader2 } from "lucide-react";
-import * as React from "react";
 import { useState } from "react";
 
 export default function Public({
   props,
   isOwner,
 }: {
-  props: TodoProps;
+  props: SubTodoProps;
   isOwner: boolean;
 }) {
   const [todoPublic, setTodoPublic] = useState(
@@ -28,12 +27,12 @@ export default function Public({
       <button
         disabled={!isOwner}
         onClick={async () => {
-          await ManageSettings({
+          await ManageSubTodoSettings({
             isOwner,
             props,
             loading: loadingTodoPublic,
             setLoading: setLoadingTodoPublic,
-            action: ChangePublic,
+            action: ChangeSubTodoPublic,
             task: !todoPublic,
             setTask: setTodoPublic,
           });

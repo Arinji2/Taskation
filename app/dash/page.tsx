@@ -17,7 +17,12 @@ export default async function Page() {
           <CreateTodoComponent />
           {todos.hasTodos &&
             todos.todos?.map((todo) => (
-              <TodoComponent TodoProps={todo} key={todo.id} />
+              <TodoComponent
+                TodoProps={todo}
+                userID={user.id}
+                owner={true}
+                key={todo.id}
+              />
             ))}{" "}
         </section>
       </section>

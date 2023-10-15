@@ -3,6 +3,7 @@
 import { query } from "@/lib/query";
 import { TodoInput } from "@/lib/schema";
 import { getUserData } from "@/lib/userFunctions";
+import { revalidatePath } from "next/cache";
 
 export async function CreateTodoAction(prevState: any, formData: FormData) {
   const name = formData.get("name");
@@ -29,6 +30,8 @@ export async function CreateTodoAction(prevState: any, formData: FormData) {
     "INSERT INTO todos (id, name, description, userID) VALUES (?, ?, ?, ?)",
     [id, parsedInput.data.name, parsedInput.data.description, user.id]
   );
+
+  revalidatePath("/dash");
 
   return {
     message: "Successfully Created Todo",

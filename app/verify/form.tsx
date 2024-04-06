@@ -1,12 +1,8 @@
 "use client";
 import { useToast } from "@/hooks/useToast";
 import { VerifyAction } from "@/lib/actions/checkVerify";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import {
-  experimental_useFormState as useFormState,
-  experimental_useFormStatus as useFormStatus,
-} from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { CheckCodeButton } from "./buttons";
 export default function Form({ code, email }: { code: string; email: string }) {
   const [codeState, setCodeState] = useState(code ?? "");

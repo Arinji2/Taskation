@@ -3,9 +3,8 @@ import { LoginAction } from "@/lib/actions/login";
 import PasswordFields from "./password";
 
 import { useToast } from "@/hooks/useToast";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 import SubmitButton from "./submit";
 const initialState = {
   type: "success" as "success" | "loading" | "error",

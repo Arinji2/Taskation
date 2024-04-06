@@ -1,6 +1,6 @@
 "use client";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
+import { useFormStatus } from "react-dom";
 
 export default function SubmitButton() {
   const { pending } = useFormStatus();

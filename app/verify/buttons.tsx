@@ -3,7 +3,7 @@
 import { sendVerifyEmail } from "@/lib/actions/email/verifyEmail";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
 export function SendEmailButton({ email, id }: { email: string; id: number }) {

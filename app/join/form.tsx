@@ -4,7 +4,7 @@ import PasswordFields from "./password";
 import { useToast } from "@/hooks/useToast";
 import { RegisterAction } from "@/lib/actions/register";
 
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 import SubmitButton from "./submit";
 const initialState = {
   type: "success" as "success" | "loading" | "error",

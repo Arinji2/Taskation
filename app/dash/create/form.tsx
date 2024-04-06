@@ -1,10 +1,8 @@
 "use client";
 import { useToast } from "@/hooks/useToast";
 import { CreateTodoAction } from "@/lib/actions/todo/create";
-import { Loader2 } from "lucide-react";
-import { experimental_useFormState as useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 import { SubmitButton } from "./submit";
-import { useEffect } from "react";
 export function Form() {
   const initialState = {
     type: "success",

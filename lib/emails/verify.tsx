@@ -1,5 +1,4 @@
-import { render } from "@react-email/render";
-
+import { Resend } from "resend";
 import VerifyEmail from "../../emails/verify";
 
 export async function EmailVerificationCode({
@@ -9,33 +8,21 @@ export async function EmailVerificationCode({
   code: number;
   email: string;
 }) {
-  const emailHtml = render(
-    <VerifyEmail
-      code={code}
-      url={`${process.env.WEB_DOMAIN}/verify?code=${code}`}
-    />
-  );
+  const resend = new Resend(process.env.EMAIL_KEY);
 
-  const options = {
-    from: "no-reply@arinji.com",
+  const res = await resend.emails.send({
+    from: "no-reply@mail.arinji.com",
     to: email,
-    subject: "Verify your email for TODO-MYSQL",
-    html: emailHtml,
-  };
-
-  const stringOptions = JSON.stringify(options);
-
-  const res = await fetch("https://email.arinji.com/email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      options: stringOptions,
-    }),
+    subject: "Verify your email for Taskation",
+    react: (
+      <VerifyEmail
+        code={code}
+        url={`${process.env.WEB_DOMAIN}/verify?code=${code}`}
+      />
+    ),
   });
 
-  if (res.status !== 200) {
+  if (res.error) {
     throw new Error("Error sending email");
   }
 }

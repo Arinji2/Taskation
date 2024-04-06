@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -9,7 +8,7 @@ export default function Home() {
   return (
     <main className="w-full min-h-[100svh] flex flex-col items-center justify-center max-w-[1280px] bg-gray-200 gap-10">
       <h1 className="font-bold md:text-6xl text-5xl xl:text-7xl text-black">
-        MYSQL-TODO
+        TASKATION
       </h1>
       <section className="w-full flex md:flex-row items-center justify-center flex-col h-fit gap-2 gap-y-6">
         <Link

@@ -2,11 +2,10 @@
 import { useToast } from "@/hooks/useToast";
 import { VerifyAction } from "@/lib/actions/checkVerify";
 import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import { CheckCodeButton } from "./buttons";
 export default function Form({ code, email }: { code: string; email: string }) {
   const [codeState, setCodeState] = useState(code ?? "");
-  const { pending } = useFormStatus();
 
   const initialState = {
     type: "success" as "success" | "loading" | "error",

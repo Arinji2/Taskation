@@ -32,8 +32,9 @@ export default function VerifyEmail({
               Click the Button Below
             </Text>
             <Button
-              pX={20}
-              pY={12}
+              style={{
+                padding: "20px 12px",
+              }}
               className="text-lg text-center text-gray-300 px-6 hover:text-slate-800 hover:bg-gray-300  transition-all ease-in-out duration-300 hover:cursor-pointer rounded-md w-fit mx-auto py-2 bg-slate-800 font-medium font-sans"
               href={url}
             >
